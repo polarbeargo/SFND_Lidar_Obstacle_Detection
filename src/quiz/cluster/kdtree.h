@@ -15,6 +15,11 @@ struct Node
 	Node(std::vector<float> arr, int setId)
 	:	point(arr), id(setId), left(NULL), right(NULL)
 	{}
+  	~Node()
+	{
+		delete left;
+		delete right;
+	}
 };
 
 struct KdTree
@@ -24,6 +29,12 @@ struct KdTree
 	KdTree()
 	: root(NULL)
 	{}
+  
+  	~KdTree()
+	{
+		delete root;
+	}
+  
 	void insertHelper(Node** node, u_int depth, std::vector<float> point, int id)
 	{
 		// TODO: Fill in this function to insert a new point into the tree
@@ -34,7 +45,7 @@ struct KdTree
       	}
       	else 
 		{
-			u_int cd = depth % 3;
+			u_int cd = depth % 2;
 			if(point[cd] < ((*node)->point[cd]))
 				insertHelper(&((*node)-> left), depth + 1, point, id);
 			else
@@ -53,14 +64,13 @@ struct KdTree
 	}
   
 void searchHelper(std::vector<float> target, Node *node, int depth, float distanceTol, std::vector<int>& ids){
-    	if(node!=nullptr){
-        	if(node->point[0]>=(target[0]-distanceTol)&&node->point[0]<=(target[0]+distanceTol) && (node->point[1]>=(target[1]-distanceTol) && node->point[1]<=(target[1]+distanceTol))&&
-				node->point[2] >= (target[2] - distanceTol) && node->point[2] <= (target[2] + distanceTol)){
-            float distance = sqrt((node->point[0]-target[0])*(node->point[0]-target[0])+(node->point[1]-target[1])*(node->point[1]-target[1]+(node->point[2]-target[2])*(node->point[2]-target[2])));
+    	if(node!=NULL){
+        	if(node->point[0]>=(target[0]-distanceTol)&&node->point[0]<=(target[0]+distanceTol) && (node->point[1]>=(target[1]-distanceTol) && node->point[1]<=(target[1]+distanceTol))){
+            float distance = sqrt((node->point[0]-target[0])*(node->point[0]-target[0])+(node->point[1]-target[1])*(node->point[1]-target[1]));
               if(distance <= distanceTol)
                 ids.emplace_back(node->id);
             }
-            u_int cd = depth % 3;
+            u_int cd = depth % 2;
             if(target[cd] - distanceTol < node->point[cd])
 				searchHelper(target,node-> left, depth + 1, distanceTol, ids);
 			else
@@ -76,7 +86,6 @@ void searchHelper(std::vector<float> target, Node *node, int depth, float distan
 		return ids;
 	}
     
-
 };
 
 
