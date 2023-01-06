@@ -13,7 +13,7 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr CreateData(std::vector<std::vector<float>> p
 
 void render2DTree(Node *node, pcl::visualization::PCLVisualizer::Ptr &viewer, Box window, int &iteration, uint depth);
 
-void ClusterHelper(const std::vector<std::vector<float>> &points, KdTree *tree, float distanceTol, int curr_index, std::vector<bool> &processed, std::vector<int> &cluster);
+void clusterHelper(const std::vector<std::vector<float>> &points, KdTree *tree, float distanceTol, int curr_index, std::vector<bool> &processed, std::vector<int> &cluster);
 
 std::vector<std::vector<int>> euclideanCluster(const std::vector<std::vector<float>> &points, KdTree *tree, float distanceTol);
 
