@@ -40,6 +40,11 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::C
   std::cout << "clusterIndices size " << clusterIndices.size() << " clusterIndices" << std::endl;
   for (std::vector<int> cluster : clusterIndices)
   {
+    if (cluster.size() < minSize || cluster.size() > maxSize)
+    {
+      continue;
+    }
+
     typename pcl::PointCloud<PointT>::Ptr clusterCloud(new pcl::PointCloud<PointT>());
     for (int index : cluster)
     {
@@ -121,9 +126,9 @@ std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT
   {
     PointT point = cloud->points[idx];
     if (inliersResult.count(idx))
-      obstCloud->points.emplace_back(point);
-    else
       planeCloud->points.emplace_back(point);
+    else
+      obstCloud->points.emplace_back(point);
   }
   auto endTime = std::chrono::steady_clock::now();
   auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
