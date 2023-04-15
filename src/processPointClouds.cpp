@@ -28,15 +28,16 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::C
   // TODO: Fill out this function to return list of indices for each cluster
   std::vector<typename pcl::PointCloud<PointT>::Ptr> clusters;
   std::vector<std::vector<float>> points;
-  KdTree *tree = new KdTree;
-  for (int i = 0; i < cloud->points.size(); i++)
+  KdTree *tree{new KdTree()};
+  int i{0};
+  for (auto point : cloud->points)
   {
-    PointT point = cloud->points[i];
-    tree->insert({point.x, point.y, point.z}, i);
-    points.push_back({point.x, point.y, point.z});
+    const std::vector<float> p{point.x, point.y, point.z};
+    tree->insert(p, i++);
+    points.push_back(p);
   }
 
-  std::vector<std::vector<int>> clusterIndices = euclideanCluster(points, tree, clusterTolerance);
+  const std::vector<std::vector<int>> clusterIndices{euclideanCluster(points, tree, clusterTolerance)};
   std::cout << "clusterIndices size " << clusterIndices.size() << " clusterIndices" << std::endl;
   for (std::vector<int> cluster : clusterIndices)
   {
@@ -48,7 +49,7 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::C
     typename pcl::PointCloud<PointT>::Ptr clusterCloud(new pcl::PointCloud<PointT>());
     for (int index : cluster)
     {
-      clusterCloud->push_back((*cloud)[index]);
+      clusterCloud->push_back(cloud->points[index]);
     }
     clusterCloud->width = clusterCloud->points.size();
     clusterCloud->height = 1;
