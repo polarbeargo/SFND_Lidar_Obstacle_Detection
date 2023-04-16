@@ -38,15 +38,17 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr &viewer, ProcessPointCloud
 {
   inputCloud = pointProcessor.FilterCloud(inputCloud, 0.15, Eigen::Vector4f(-20, -6, -5, 1), Eigen::Vector4f(30, 7, 5, 1));
   std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> segmentCloud = pointProcessor.SegmentPlaneCustom(inputCloud, 100, 0.2);
-  std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessor.ClusterCustom(segmentCloud.first, 0.42, 18, 1500);
+
   renderPointCloud(viewer, segmentCloud.second, "planeCloud", Color(0, 1, 0));
   renderPointCloud(viewer, segmentCloud.first, "obstacleCloud", Color(1, 0, 0));
+  std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessor.ClusterCustom(segmentCloud.first, 0.42, 18, 1500);
   int clusterId = 0;
   std::vector<Color> colors = {Color(1, 0, 0), Color(0, 1, 1), Color(1, 1, 0)};
-
+  std::cout << "# number of cluster " << cloudClusters.size() << std::endl;
+  std::cout << "# number of pts in obstCloud " << segmentCloud.first->size() << std::endl;
   for (pcl::PointCloud<pcl::PointXYZI>::Ptr cluster : cloudClusters)
   {
-    //       std::cout << "cluster size ";
+    std::cout << "cluster size ";
     pointProcessor.numPoints(cluster);
     renderPointCloud(viewer, cluster, "obstacleCloud" + std::to_string(clusterId), colors[clusterId % colors.size()]);
     Box box = pointProcessor.BoundingBox(cluster);
