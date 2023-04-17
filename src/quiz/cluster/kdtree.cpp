@@ -45,9 +45,10 @@ void KdTree::searchHelper(std::vector<float> target, Node *node, int depth, floa
 				ids.push_back(node->id);
 		}
 
-		if (target[depth % 3] - distanceTol < node->point[depth % 3])
+		uint cd = depth % 3;
+		if (target[cd] - distanceTol < node->point[cd])
 			searchHelper(target, node->left, depth + 1, distanceTol, ids);
-		if (target[depth % 3] + distanceTol > node->point[depth % 3])
+		if (target[cd] + distanceTol > node->point[cd])
 			searchHelper(target, node->right, depth + 1, distanceTol, ids);
 	}
 }
