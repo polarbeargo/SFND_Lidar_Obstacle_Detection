@@ -39,7 +39,8 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::C
 
   const std::vector<std::vector<int>> clusterIndices{euclideanCluster(points, tree, clusterTolerance)};
   std::cout << "clusterIndices size " << clusterIndices.size() << " clusterIndices" << std::endl;
-  for (std::vector<int> cluster : clusterIndices)
+
+  for (auto cluster : clusterIndices)
   {
     if (cluster.size() < minSize || cluster.size() > maxSize)
     {
@@ -47,9 +48,9 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::C
     }
 
     typename pcl::PointCloud<PointT>::Ptr clusterCloud(new pcl::PointCloud<PointT>());
-    for (int index : cluster)
+    for (auto index : cluster)
     {
-      clusterCloud->push_back(cloud->points[index]);
+      clusterCloud->points.push_back(cloud->points[index]);
     }
     clusterCloud->width = clusterCloud->points.size();
     clusterCloud->height = 1;
