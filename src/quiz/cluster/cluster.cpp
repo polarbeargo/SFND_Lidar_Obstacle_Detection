@@ -74,7 +74,8 @@ void clusterHelper(int idx, const std::vector<std::vector<float>> &points, std::
 		std::vector<int> neareast = tree->search(points[idx], distanceTol);
 		for (int id : neareast)
 		{
-			clusterHelper(idx, points, cluster, processed, tree, distanceTol);
+			if (!processed[id])
+				clusterHelper(id, points, cluster, processed, tree, distanceTol);
 		}
 	}
 }
