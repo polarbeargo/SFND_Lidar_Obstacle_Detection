@@ -154,6 +154,7 @@ If you get build errors related to Qt5, make sure that the path for Qt5 is corre
 ## Results:
 
 - Normal case  
-<img src="media/normal.gif" width="700" height="400" />  
+<img src="media/normal.gif" width="700" height="400" />   
+
 - Hard case
 <img src="media/hard.gif" width="700" height="400" />
