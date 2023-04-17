@@ -14,7 +14,10 @@ public:
 	Node *left;
 	Node *right;
 
-	Node(std::vector<float> arr, int setId);
+	Node(std::vector<float> arr, int setId) : point(arr), id(setId), left(NULL), right(NULL)
+	{
+	}
+
 	~Node()
 	{
 		delete left;
@@ -26,14 +29,17 @@ class KdTree
 {
 public:
 	Node *root;
+	KdTree()
+		: root(NULL)
+	{
+	}
 
-	KdTree();
 	~KdTree()
 	{
 		delete root;
 	}
 
-	void insertHelper(Node **node, u_int depth, std::vector<float> point, int id);
+	void insertHelper(Node **node, uint depth, std::vector<float> point, int id);
 
 	void insert(std::vector<float> point, int id);
 
